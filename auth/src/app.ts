@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(
     cookieSession({
         signed: false,
-        secure: process.env.NODE_ENV !== 'test'
+        // secure: process.env.NODE_ENV !== 'test'
     })
 );
 
@@ -25,7 +25,6 @@ app.use(signInRouter);
 app.use(signOutRouter);
 
 app.all('*', async () => {
-    console.log("pikaaaa");
     throw new NotFoundError();
 })
 app.use(errorHandler);
