@@ -4,6 +4,7 @@ import {
   validateRequest,
   NotFoundError,
   requireAuth,
+  BadRequestError,
   NotAuthorizedError,
 } from '@bookmyticketpt/common';
 import { Ticket } from '../models/ticket';
@@ -29,6 +30,10 @@ router.put(
       throw new NotFoundError();
     }
 
+    if (ticket.orderId) {
+      throw new BadRequestError('Cannot edit a reserved ticket');
+    }
+
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
@@ -43,9 +48,9 @@ router.put(
       title: ticket.title.toString(),
       price: ticket.price,
       userId: ticket.userId,
+      version: ticket.version,
     });
 
-    res.send(ticket);
     res.send(ticket);
   }
 );
